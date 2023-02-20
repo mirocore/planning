@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('proyects', function (Blueprint $table) {
+        Schema::table('projects', function (Blueprint $table) {
             $table->unsignedBigInteger('id_state')->after('name')->nullable();
 
             $table->foreign('id_state')->on('states')->references('id');
@@ -23,7 +23,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('proyects', function (Blueprint $table) {
+        Schema::table('projects', function (Blueprint $table) {
             // Dropeamos la columna.
             $table->dropForeign(['id_state']);
             $table->dropColumn('id_state');

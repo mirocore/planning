@@ -1,6 +1,6 @@
 
 <template>
-    <div class="flex flex-col justify-between items-center p-3">
+    <div class="flex flex-col  items-center gap-10 p-3">
         <div>
             <p class="font-bold text-zinc-800 text-xl">Planning</p>
         </div>

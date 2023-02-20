@@ -17,7 +17,7 @@ class DatabaseSeeder extends Seeder
         $this->call([TimeSeeder::class]);
         $this->call([ProductSeeder::class]);
         $this->call([StateSeeder::class]);
-        $this->call([ProyectSeeder::class]);
+        $this->call([ProjectSeeder::class]);
         $this->call([TaskSeeder::class]);
     }
 }
