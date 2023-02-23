@@ -29,7 +29,7 @@ export default{
         PageLayout,
         TitlePage,
         ProjectCard,
-        NavLink
+        NavLink,
     },
     props:['projects'],
 }

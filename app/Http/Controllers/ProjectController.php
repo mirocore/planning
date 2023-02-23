@@ -14,7 +14,7 @@ class ProjectController extends Controller
 {
     public function index(){
 
-        $projects = Project::with('tasks')->with('product', 'state')->get();
+        $projects = Project::latest()->with('tasks')->with('product', 'state')->get();
 
         //  FORMATO FECHA
         foreach($projects as $project){
@@ -54,5 +54,15 @@ class ProjectController extends Controller
 
         // TODO MENSAJE WITH
         return redirect()->route('project.index');
+    }
+
+    public function destroy(Project $project)
+    {
+        //TODO VALIDAR SI EXISTE
+        
+        // BORRAR REGISTRO
+        $project->delete();
+
+        return redirect()->back();
     }
 }

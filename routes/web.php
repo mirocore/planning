@@ -15,6 +15,7 @@ Route::get('/usuarios', [UserController::class, 'index'])->name('user.index');
 Route::get('/proyectos', [ProjectController::class, 'index'])->name('project.index');
 Route::get('/proyectos/create', [ProjectController::class, 'create'])->name('project.create');
 Route::post('/proyectos', [ProjectController::class, 'store'])->name('project.store');
+Route::delete('/proyectos/{project}', [ProjectController::class, 'destroy'])->name('project.destroy');
 
 /* Cambiar estado de tareas */
 Route::put('/tareas/estado/{task}', [TaskController::class, 'changeState'])->name('task.changeState');
