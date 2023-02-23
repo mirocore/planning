@@ -11,7 +11,10 @@ use Inertia\Inertia;
 
 Route::get('/', [PageController::class, 'index'])->name('home');
 Route::get('/usuarios', [UserController::class, 'index'])->name('user.index');
+
 Route::get('/proyectos', [ProjectController::class, 'index'])->name('project.index');
+Route::get('/proyectos/create', [ProjectController::class, 'create'])->name('project.create');
+Route::post('/proyectos', [ProjectController::class, 'store'])->name('project.store');
 
 /* Cambiar estado de tareas */
 Route::put('/tareas/estado/{task}', [TaskController::class, 'changeState'])->name('task.changeState');

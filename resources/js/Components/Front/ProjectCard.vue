@@ -5,7 +5,7 @@
             <p class="text-xs text-zinc-600 mb-3">{{ project.product.name }}</p>
         </div>
         <p class="font-bold ">{{ project.name }}</p>
-
+        <p class="text-xs text-zinc-600 mb-3 capitalize"><span class="font-bold">Estado: </span>{{ project.state.name }}</p>
         <TaskProjectList 
             :tasks="project.tasks"
         />

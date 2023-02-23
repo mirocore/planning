@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
 use App\Models\Project;
+use App\Models\State;
 use App\Models\Time;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -12,8 +14,8 @@ class ProjectController extends Controller
 {
     public function index(){
 
-        $projects = Project::with('tasks')->with('product')->get();
-        
+        $projects = Project::with('tasks')->with('product', 'state')->get();
+
         //  FORMATO FECHA
         foreach($projects as $project){
             $project['creado'] = date("d-m-Y", strtotime($project['created_at']));  
@@ -27,5 +29,30 @@ class ProjectController extends Controller
         return Inertia::render('Projects/index', [
             'projects' => $projects
         ]);
+    }
+
+    public function create(){
+
+        $products = Product::all();
+        $states = State::all();
+
+        return Inertia::render('Projects/formCreate', [
+            "products" => $products,
+            "states" => $states
+        ]);
+    }
+
+    public function store(Request $request){
+
+        // TODO VALIDACION
+
+        // OBTENGO LOS DATOS
+        $data = $request->input();
+
+        // NUEVO REGISTRO
+        $newProject = Project::create($data);
+
+        // TODO MENSAJE WITH
+        return redirect()->route('project.index');
     }
 }
