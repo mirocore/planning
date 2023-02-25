@@ -65,4 +65,33 @@ class ProjectController extends Controller
 
         return redirect()->back();
     }
+
+    public function edit(Project $project)
+    {
+
+        $products = Product::all();
+        $states = State::all();
+
+        return Inertia::render('Projects/formEdit', [
+            "products" => $products,
+            "states" => $states,
+            "project" => $project
+        ]);
+    }
+
+    public function update(Request $request, Project $project)
+    {
+
+        // TODO VALIDACION
+
+        // OBTENGO LOS DATOS
+        $data = $request->input();
+
+        // ACTUALIZO EL REGISTRO
+        $project->update( $data );
+
+        // RETORNO AL LISTADO
+        // TODO MENSAJE FLASH
+        return redirect()->route('project.index');
+    }
 }
