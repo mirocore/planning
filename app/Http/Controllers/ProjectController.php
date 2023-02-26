@@ -54,7 +54,10 @@ class ProjectController extends Controller
         $newProject = Project::create($data);
 
         // TODO MENSAJE WITH
-        return redirect()->route('project.index');
+        return redirect()->route('project.index')->with('avisoFlash', [
+            "type" => "success",
+            "message" => "Se ha creado exitosamente el proyecto: '" .  $newProject->name  . "'"
+        ]);
     }
 
     public function destroy(Project $project)
@@ -64,7 +67,10 @@ class ProjectController extends Controller
         // BORRAR REGISTRO
         $project->delete();
 
-        return redirect()->back();
+        return redirect()->back()->with('avisoFlash', [
+            "type" => "success",
+            "message" => "Se ha eliminado exitosamente el proyecto: '" .  $project->name  . "'"
+        ]);
     }
 
     public function edit(Project $project)
@@ -94,6 +100,9 @@ class ProjectController extends Controller
 
         // RETORNO AL LISTADO
         // TODO MENSAJE FLASH
-        return redirect()->route('project.index');
+        return redirect()->route('project.index')->with('avisoFlash', [
+            "type" => "success",
+            "message" => "Se ha editado exitosamente el proyecto: '" .  $project->name  . "'"
+        ]);
     }
 }
