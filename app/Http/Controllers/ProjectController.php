@@ -44,7 +44,8 @@ class ProjectController extends Controller
 
     public function store(Request $request){
 
-        // TODO VALIDACION
+        // VALIDACION
+        $request->validate(Project::$rules_create, Project::$messages_create);
 
         // OBTENGO LOS DATOS
         $data = $request->input();
@@ -82,7 +83,8 @@ class ProjectController extends Controller
     public function update(Request $request, Project $project)
     {
 
-        // TODO VALIDACION
+        // VALIDACION
+        $request->validate(Project::$rules_edit, Project::$messages_edit);
 
         // OBTENGO LOS DATOS
         $data = $request->input();

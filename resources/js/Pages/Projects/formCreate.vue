@@ -12,6 +12,10 @@
                     placeholder="Nombre del proyecto"
                     v-model="newProject.name"
                 />
+                <ValidationMsg 
+                    v-if="$page.props.errors.name"
+                    :mensaje="$page.props.errors.name"
+                />
             </div>
             <div class="grid grid-cols-12 mt-5 gap-4">
 
@@ -21,6 +25,10 @@
                         <option value="">Seleccione Producto</option>
                         <option v-for="product in products" :key="product.id" :value="product.id">{{ product.name }}</option>
                     </select>
+                    <ValidationMsg 
+                        v-if="$page.props.errors.id_product"
+                        :mensaje="$page.props.errors.id_product"
+                    />
                 </div>
 
                 <div class="col-span-4">
@@ -28,6 +36,10 @@
                     <select id="id_state" v-model="newProject.id_state" class="text-xs bg-gray-200  text-gray-600 border-0 capitalize w-full">
                         <option v-for="state in states" :key="state.id" :value="state.id">{{ state.name }}</option>
                     </select>
+                    <ValidationMsg 
+                        v-if="$page.props.errors.id_state"
+                        :mensaje="$page.props.errors.id_state"
+                    />
                 </div>
                 <div class="col-span-4">
                     <label for="priority" class="text-xs block mb-1">Prioridad</label>
@@ -35,6 +47,10 @@
                         <option value="0">No</option>
                         <option value="1">Si</option>
                     </select>
+                    <ValidationMsg 
+                        v-if="$page.props.errors.priority"
+                        :mensaje="$page.props.errors.priority"
+                    />
                 </div>
             </div>
 
@@ -46,12 +62,13 @@
 <script>
 import PageLayout from '@/Layouts/PageLayout.vue';
 import TitlePage from '@/Components/Front/TitlePage.vue';
-
+import ValidationMsg from '../../Components/Front/ValidationMessage.vue';
 
 export default{
     components:{
         PageLayout,
-        TitlePage
+        TitlePage,
+        ValidationMsg
     },
     data(){
         return{
