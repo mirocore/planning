@@ -11,6 +11,8 @@ class Task extends Model
 
     protected $table = "tasks";
 
+    public $fillable = ['title', 'description', 'id_project', 'id_user', 'id_time', 'state'];
+
     public function user(){
         return $this->hasMany( User::class, 'id_user', 'id' );
     }

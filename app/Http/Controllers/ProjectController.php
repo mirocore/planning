@@ -26,8 +26,16 @@ class ProjectController extends Controller
             }
         }
 
+        // DATOS PARA EL FORMULARIO
+        $states = State::all();
+        $users = User::all();
+        $times = Time::all();
+
         return Inertia::render('Projects/index', [
-            'projects' => $projects
+            'projects' => $projects,
+            'states' => $states,
+            'users' => $users,
+            'times' => $times
         ]);
     }
 

@@ -32,8 +32,22 @@
         </div>
         <p class="font-bold ">{{ project.name }}</p>
         <p class="text-xs text-zinc-600 mb-3 capitalize"><span class="font-bold">Estado: </span>{{ project.state.name }}</p>
+        
+        <Modal :show="showModal" @close="toggleModal">
+            <FormTareaNueva 
+                :projectName="project.name"
+                :close="toggleModal"
+                :toggleModal="toggleModal"
+                :states="states"
+                :times="times"
+                :users="users"
+            />
+        </Modal>
+
+        <button @click="toggleModal">Ver Modal</button>
         <TaskProjectList 
             :tasks="project.tasks"
+            closeable="true"
         />
 
     </div>
@@ -42,21 +56,33 @@
 <script>
 import TaskProjectList from './TaskProjectList.vue';
 import Dropdown from "@/Components/Dropdown.vue";
+import Modal from "@/Components/Modal.vue";
+import FormTareaNueva from "@/Components/Front/FormTareaNueva.vue";
 import { Link } from '@inertiajs/vue3';
 
 
 export default {
-    props:['project'],
+    props:['project', 'states', 'users', 'times'],
     components:{
         TaskProjectList,
         Dropdown,
-        Link
+        Link,
+        Modal,
+        FormTareaNueva
+    },
+    data(){
+        return{
+            showModal: false
+        }
     },
     methods:{
         deleteProject(id){
             // TODO SWEETALERT
             
             this.$inertia.delete(`/proyectos/${id}`);
+        },
+        toggleModal(){
+            this.showModal = !this.showModal;
         }
     }
 }

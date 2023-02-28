@@ -20,6 +20,9 @@
                 v-for="project in projects"
                 :key="project.id" 
                 :project="project"
+                :states="states"
+                :users="users"
+                :times="times"
             />
         </div>
     </PageLayout>
@@ -41,7 +44,7 @@ export default{
         NavLink,
         AvisoFlash
     },
-    props:['projects'],
+    props:['projects', 'states', 'users', 'times'],
 }
 
 </script>
