@@ -22,4 +22,20 @@ class TaskController extends Controller
         /* TODO Return with mensaje */
         return redirect()->back();
     }
+
+    public function store(Request $request){
+        // VALIDACION SI ES QUE SE PUEDE
+        
+        // DATOS
+        $data =  $request->input();
+        
+        // INSERTAR REGISTRO
+        $newTask = Task::create($data);
+
+        // VOLVER AL LISTADO
+        return redirect()->route('project.index')->with('avisoFlash', [
+            "type" => "success",
+            "message" => "Se ha creado exitosamente la tarea: '" .  $newTask->title  . "'"
+        ]);
+    }
 }

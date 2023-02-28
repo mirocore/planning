@@ -61,7 +61,7 @@ class ProjectController extends Controller
         // NUEVO REGISTRO
         $newProject = Project::create($data);
 
-        // TODO MENSAJE WITH
+        // VOLVER AL LISTADO
         return redirect()->route('project.index')->with('avisoFlash', [
             "type" => "success",
             "message" => "Se ha creado exitosamente el proyecto: '" .  $newProject->name  . "'"
