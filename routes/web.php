@@ -23,6 +23,7 @@ Route::put('/proyectos/{project}', [ProjectController::class, 'update'])->name('
 /* TAREAS */
 Route::post('/tareas', [TaskController::class, 'store'])->name('task.store');
 Route::put('/tareas/estado/{task}', [TaskController::class, 'changeState'])->name('task.changeState');
+Route::delete('/tareas/{task}', [TaskController::class, 'destroy'])->name('task.destroy');
 
 /* Route::middleware([
     'auth:sanctum',

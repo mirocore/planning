@@ -1,8 +1,8 @@
 <template>
     <div class="mb-5 bg-slate-300 p-4 rounded-lg">
         <div class="flex justify-between items-center">
-            <p class="text-xs text-zinc-600 mb-3">Creado: <span class="text-zinc-700 font-semibold">{{ project.creado }}</span></p>
-            <p class="text-xs text-zinc-600 mb-3">{{ project.product.name }}</p>
+            <p class="text-xs text-zinc-600">Creado: <span class="text-zinc-700 font-semibold">{{ project.creado }}</span></p>
+            <small class="text-xs text-zinc-600">{{ project.product.name }}</small>
             <Dropdown>
                 <template v-slot:trigger>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 cursor-pointer">
@@ -10,7 +10,7 @@
                     </svg>
                 </template>
                 <template v-slot:content>
-                    <ul class="bg-gray-300 py-0">
+                    <ul class="bg-gray-300 py-0 ">
                         <li class="text-xs p-3 hover:bg-gray-500 transition-all cursor-pointer hover:text-white flex gap-1">
                             <Link class="flex gap-1 w-full" :href="`/proyectos/edit/${project.id}`">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
@@ -30,7 +30,7 @@
                 </template>
             </Dropdown>
         </div>
-        <p class="font-bold ">{{ project.name }}</p>
+        <p class="font-bold mt-3">{{ project.name }} </p>
         <p class="text-xs text-zinc-600 mb-3 capitalize"><span class="font-bold">Estado: </span>{{ project.state.name }}</p>
         
         <Modal :show="showModal" @close="toggleModal">
@@ -44,7 +44,7 @@
             />
         </Modal>
 
-        <button @click="toggleModal">Ver Modal</button>
+        <button @click="toggleModal" class="text-xs bg-blue-800 text-white hover:bg-blue-900 py-1 px-2 transition-all mb-2" >Tarea Nueva</button>
         <TaskProjectList 
             :tasks="project.tasks"
             closeable="true"
@@ -83,7 +83,7 @@ export default {
         },
         toggleModal(){
             this.showModal = !this.showModal;
-        }
+        },
     }
 }
 

@@ -38,4 +38,16 @@ class TaskController extends Controller
             "message" => "Se ha creado exitosamente la tarea: '" .  $newTask->title  . "'"
         ]);
     }
+
+    public function destroy(Task $task){
+        //TODO VALIDAR SI EXISTE
+        
+        // BORRAR REGISTRO
+        $task->delete();
+
+        return redirect()->back()->with('avisoFlash', [
+            "type" => "success",
+            "message" => "Se ha eliminado exitosamente la tarea: '" .  $task->title  . "'"
+        ]);
+    }
 }
