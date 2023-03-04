@@ -1,8 +1,11 @@
 <template>
     <PageLayout>
+        <NavLink href="/proyectos" class="text-xs">Volver al listado</NavLink>
         <TitlePage 
             title="Crear Proyecto"
         />
+
+
         <form @submit.prevent="createProject" class="bg-white p-5">
             <div>
                 <label for="name" class="text-xs block mb-1">Nombre</label>
@@ -63,12 +66,15 @@
 import PageLayout from '@/Layouts/PageLayout.vue';
 import TitlePage from '@/Components/Front/TitlePage.vue';
 import ValidationMsg from '../../Components/Front/ValidationMessage.vue';
+import AWN from "awesome-notifications";
+import NavLink from '@/Components/NavLink.vue';
 
 export default{
     components:{
         PageLayout,
         TitlePage,
-        ValidationMsg
+        ValidationMsg,
+        NavLink
     },
     data(){
         return{
@@ -84,7 +90,19 @@ export default{
     props:['products', 'states'],
     methods:{
         createProject(){
-            this.$inertia.post('/proyectos', this.newProject);
+            this.$inertia.post('/proyectos', this.newProject, {
+                onSuccess: (page) => {
+                    let notifier = new AWN()
+                    notifier.success("Proyecto creado", {
+                        icons:{
+                            success: "check-circle",
+                        },
+                        labels:{
+                            success: "¡Éxito!",
+                        },
+                        position:"top-right",
+                    })
+            }});
         }
     }
 }

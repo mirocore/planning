@@ -63,8 +63,7 @@ class ProjectController extends Controller
 
         // VOLVER AL LISTADO
         return redirect()->route('project.index')->with('avisoFlash', [
-            "type" => "success",
-            "message" => "Se ha creado exitosamente el proyecto: '" .  $newProject->name  . "'"
+            "newProject" => $newProject
         ]);
     }
 
@@ -107,7 +106,6 @@ class ProjectController extends Controller
         $project->update( $data );
 
         // RETORNO AL LISTADO
-        // TODO MENSAJE FLASH
         return redirect()->route('project.index')->with('avisoFlash', [
             "type" => "success",
             "message" => "Se ha editado exitosamente el proyecto: '" .  $project->name  . "'"

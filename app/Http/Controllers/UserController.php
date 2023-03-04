@@ -10,10 +10,17 @@ class UserController extends Controller
 {
     public function index(){
 
-        $users = User::latest()->orderBy('id_role')->orderBy('name')->get();
+
+        $users = User::latest()->with('tasks')->orderBy('id_role')->orderBy('name')->get();
+
+        // Cantidad de tareas
+        foreach($users as $user){
+            $user["amountTasks"] = count($user->tasks);
+        }
 
         return Inertia::render('Usuarios/index', [
-            'users' => $users]
+            'users' => $users
+            ]
         );
     }
 }

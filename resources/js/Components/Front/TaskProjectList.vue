@@ -1,4 +1,5 @@
 <template>
+    
     <p v-if="tasks.length" class="text-xs flex items-center mt-2">
             Tareas: <span>{{ tasks.length }}</span>
             <svg v-if="!showTasks" @click="toggleShow" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 cursor-pointer ml-1">
@@ -40,13 +41,11 @@
                 </template>
                 <template v-slot:content>
                     <ul class="bg-gray-300 py-0">
-                        <li class="text-xs p-3 hover:bg-gray-500 transition-all cursor-pointer hover:text-white flex gap-1">
-                            <Link class="flex gap-1 w-full" :href="`/`">
+                        <li @click="toggleModal" class="text-xs p-3 hover:bg-gray-500 transition-all cursor-pointer hover:text-white flex gap-1">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
                                 </svg>
                                 Editar
-                            </Link>
                         </li>
                         <li @click="deleteTask(task.id)" class="text-xs p-3 hover:bg-gray-500 transition-all cursor-pointer hover:text-white flex gap-1">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
@@ -56,26 +55,43 @@
                             Borrar
                         </li>
                     </ul>
+                    <Modal :show="showModal" @close="toggleModal">
+                        <FormTareaEdit 
+                            :users="users"
+                            :times="times"
+                            :task="task"
+                            :projectId="projectId"
+                            :projectName="projectName"
+                            :toggleModal="toggleModal"
+                        />
+                    </Modal>
                 </template>
             </Dropdown>
             </span>
         </li>
     </ul>
-
 </template>
 
 <script>
+import AWN from "awesome-notifications"
+
+
 import Dropdown from "@/Components/Dropdown.vue";
+import Modal from "@/Components/Modal.vue";
+import FormTareaEdit from "@/Components/Front/FormTareaEdit.vue";
 
 export default{
-    props:['tasks'],
+    props:['tasks', 'users', 'times', 'projectId', 'projectName'],
     data(){
         return{
-            showTasks: true
+            showTasks: true,
+            showModal: false
         }
     },
     components:{
-        Dropdown
+        Dropdown,
+        Modal,
+        FormTareaEdit
     },
     methods:{
         toggleShow(){
@@ -86,12 +102,73 @@ export default{
             }
         },
         changeState(task){
-            this.$inertia.put(`/tareas/estado/${task.id}`)
+             this.$inertia.put(`/tareas/estado/${task.id}`, [],{
+                preserveScroll: true,
+                position:"top-right",
+                onSuccess: (page) => {
+                    let notifier = new AWN()
+                    if(task.state === 1){
+                        notifier.info("Se ha destildado la tarea", {
+                            position:"top-right",
+                            icons:{
+                                success: "check-circle",
+                            },
+                            labels:{
+                                info: "¡Lástima!",
+                            },
+                            position:"top-right",
+                        })
+                    }else{
+                        notifier.success("Tarea completa", {
+                            icons:{
+                                prefix: "<i class='fa fas fa-fw fa-",
+                                success: "check",
+                                suffix: "'></i>",
+                            },
+                            labels:{
+                                success: "¡Éxito!",
+                            }
+                        })
+                    }
+                },
+            }) 
         },
         
         deleteTask(id){
-           this.$inertia.delete(`/tareas/${id}`); 
-        }
+
+            let notifier = new AWN();
+
+            let onOk = () => {
+                this.$inertia.delete(`/tareas/${id}`, 
+                    {
+                        position:"top-right",
+                        preserveScroll: true,
+                        onSuccess: (page) => {
+                            let notifier = new AWN();
+                            notifier.success("Tarea eliminada", {
+                                position:"top-right",
+                            });
+                        },
+                    }
+                )
+            };
+            let onCancel = () => {};
+            notifier.confirm(
+                'Ésta acción no tiene vuelta atrás',
+                onOk,
+                onCancel,
+                {
+                labels: {
+                    confirm: '¿Estás seguro?'
+                }
+                }
+            )
+
+            
+        },
+        toggleModal(){
+            this.showModal = !this.showModal;
+        },
     }
 }
 </script>

@@ -1,5 +1,6 @@
 <template>
     <PageLayout>
+        <NavLink href="/proyectos" class="text-xs">Volver al listado</NavLink>
         <TitlePage 
             title="Editar Proyecto"
         />
@@ -74,12 +75,15 @@
 import PageLayout from '@/Layouts/PageLayout.vue';
 import TitlePage from '@/Components/Front/TitlePage.vue';
 import ValidationMsg from '../../Components/Front/ValidationMessage.vue';
+import AWN from "awesome-notifications";
+import NavLink from '@/Components/NavLink.vue';
 
 export default{
     components:{
         PageLayout,
         TitlePage,
-        ValidationMsg
+        ValidationMsg,
+        NavLink
     },
     data(){
         return{}
@@ -87,7 +91,19 @@ export default{
     props:['products', 'states', 'project'],
     methods:{
         editProject(){
-            this.$inertia.put(`/proyectos/${this.project.id}`, this.project);
+            this.$inertia.put(`/proyectos/${this.project.id}`, this.project, {
+                onSuccess: (page) => {
+                    let notifier = new AWN()
+                    notifier.success("Proyecto actualizado", {
+                        icons:{
+                            success: "check-circle",
+                        },
+                        labels:{
+                            success: "¡Éxito!",
+                        },
+                        position:"top-right",
+                    })
+            }});
         }
     }
 }

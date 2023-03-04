@@ -2,22 +2,22 @@
 
     <div class="mb-3 flex justify-between items-center">
         <div>
-            <p class="text-md font-bold text-gray-700">Crear Tarea nueva</p>
+            <p class="text-md font-bold text-gray-700">Editar Tarea</p>
             <p class="text-xs text-gray-400">Proyecto:{{ projectName }}</p>
         </div>
 
-        <svg @click="closeModal" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 hover:w-5 hover:h-5 transition-all cursor-pointer">
+        <svg @click="closeModal" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4  hover:w-5 hover:h-5 transition-all cursor-pointer">
             <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
         </svg>
     </div>
 
-    <form @submit.prevent="crearTarea" class="flex flex-col gap-3">       
+    <form @submit.prevent="editTask" class="flex flex-col gap-3">       
             <div class="">
                 <label for="title" class="text-xs text-gray-500">Titulo</label>
                 <input 
                     type="text"
                     id="title"
-                    v-model="newTask.title"
+                    v-model="task.title"
                     class="w-full text-gray-500 .placeholder-gray-500::placeholder text-xs border-gray-300"
                     placeholder="Ingrese título de la tarea"
                 />
@@ -25,14 +25,14 @@
 
             <div>
                 <label class="text-xs text-gray-500" for="description">Descripción</label>
-                <textarea id="description" v-model="newTask.description" class="w-full text-gray-500 .placeholder-gray-500::placeholder text-xs border-gray-300 resize-none">
+                <textarea id="description" v-model="task.description" class="w-full text-gray-500 .placeholder-gray-500::placeholder text-xs border-gray-300 resize-none">
                 </textarea>
             </div>
             
             <div class="grid grid-cols-2 gap-5">
                     <div>
                         <label class="text-xs text-gray-500 block" for="id_user">Encargado</label>
-                        <select class="w-full text-xs mt-1 text-gray-500 border-gray-400" id="id_user" v-model="newTask.id_user">
+                        <select class="w-full text-xs mt-1 text-gray-500 border-gray-400" id="id_user" v-model="task.id_user">
                             <option value="0">Seleccione Empleado</option>
                             <option v-for="user in users" :key="user.id" :value="user.id">{{ user.name }} {{ user.lastname }}</option>
                         </select>
@@ -40,14 +40,14 @@
 
                     <div>
                         <label class="text-xs text-gray-500 block" for="id_time">Tiempo</label>
-                        <select v-model="newTask.id_time" id="id_time" class="w-full text-xs mt-1 text-gray-500 border-gray-400 uppercase">
+                        <select v-model="task.id_time" id="id_time" class="w-full text-xs mt-1 text-gray-500 border-gray-400 uppercase">
                             <option v-for="time in times" :key="time.id" class="uppercase" :value="time.id" >{{ time.name }}</option>
                         </select>
                     </div>
 
             </div>
                 
-        <button class="font-bold text-white bg-sky-600 hover:bg-sky-900 transition-all text-xs py-3 w-full mt-3">Crear Tarea Nueva</button>
+        <button class="font-bold text-white bg-sky-600 hover:bg-sky-900 transition-all text-xs py-3 w-full mt-3">Editar Tarea Nueva</button>
 
     </form>
 </template>
@@ -56,53 +56,36 @@
 import AWN from "awesome-notifications";
 
 export default{
-    props:['projectName', 'projectId', 'toggleModal', 'users', 'times'],
+    props:['projectName', 'projectId', 'users', 'times', 'task', 'toggleModal'],
     methods:{
         closeModal(){
             this.toggleModal();
         },
-        crearTarea(){
+        editTask(){
            // TODO VALIDACION
            
-           // AGREGO EL ID DEL PROYECTO
-           this.newTask.id_project = this.projectId;
-
            // CIERRO EL MODAL
            this.closeModal();
 
            // MANDO REGISTRO
-           this.$inertia.post('/tareas', this.newTask, 
-           {
+           this.$inertia.put(`/tareas/${this.task.id}`, this.task, {
                 preserveScroll: true,
-                onSuccess: (page) => {
+                onSuccess: page => {
                     let notifier = new AWN()
-                    notifier.success("Tarea creada", {
-                        position:"top-right",
-                        icons:{
-                            success: "check-circle",
-                        },
-                        labels:{
-                            success: "¡Éxito!",
-                        }
-                    })
-                }
-            }
-           );
+                    notifier.success("Tarea editada", {
+                       label:{success: "¡Éxito!"} 
+                    });
+                } //FIN DEL ON SUCCESS
+           } // FIN DE LOS OPTIONS
+           ); // FIN DE INERTIA PUT
 
            
         }
     },
     data(){
         return{
-            newTask:{
-                title: '',
-                description: '',
-                id_user: 0,
-                id_time: 1,
-                id_state: 0,
-                id_project: null
-            }
+            showModal:false,
         }
-    }
+    },
 }
 </script>

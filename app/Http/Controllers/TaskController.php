@@ -20,7 +20,10 @@ class TaskController extends Controller
         $task->save();
         
         /* TODO Return with mensaje */
-        return redirect()->back();
+        return redirect()->back()->with('avisoFlash', [
+            "type" => "success",
+            "message" => "Se ha creado"
+        ]);
     }
 
     public function store(Request $request){
@@ -50,4 +53,17 @@ class TaskController extends Controller
             "message" => "Se ha eliminado exitosamente la tarea: '" .  $task->title  . "'"
         ]);
     }
+
+
+    public function update(Task $task, Request $request){
+       // TODO VALIDACION
+       
+        // OBTENGO LOS DATOS
+       $data = $request->input();
+
+       // ACTUALIZO EL REGISTRO
+       $task->update( $data );
+    }
 }
+
+
