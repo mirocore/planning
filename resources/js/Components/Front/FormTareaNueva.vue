@@ -18,9 +18,11 @@
                     type="text"
                     id="title"
                     v-model="newTask.title"
+                    :class="$page.props.errors.title ? 'border-2 border-red-400' : '' "
                     class="w-full text-gray-500 .placeholder-gray-500::placeholder text-xs border-gray-300"
                     placeholder="Ingrese título de la tarea"
                 />
+                <div class="mt-1 text-xs bg-red-300 text-red-900 px-4 py-2" v-if="$page.props.errors.title">{{ $page.props.errors.title }}</div>
             </div>
 
             <div>
@@ -32,10 +34,12 @@
             <div class="grid grid-cols-2 gap-5">
                     <div>
                         <label class="text-xs text-gray-500 block" for="id_user">Encargado</label>
-                        <select class="w-full text-xs mt-1 text-gray-500 border-gray-400" id="id_user" v-model="newTask.id_user">
-                            <option value="0">Seleccione Empleado</option>
+                        <select :class="$page.props.errors.id_user ? 'border-2 border-red-400' : '' " class="w-full text-xs mt-1 text-gray-500 border-gray-400" id="id_user" v-model="newTask.id_user">
+                            <option value="">Seleccione Empleado</option>
                             <option v-for="user in users" :key="user.id" :value="user.id">{{ user.name }} {{ user.lastname }}</option>
                         </select>
+                        <div class="mt-1 text-xs bg-red-300 text-red-900 px-4 py-2" v-if="$page.props.errors.id_user">{{ $page.props.errors.id_user }}</div>
+
                     </div>
 
                     <div>
@@ -62,30 +66,41 @@ export default{
             this.toggleModal();
         },
         crearTarea(){
-           // TODO VALIDACION
-           
            // AGREGO EL ID DEL PROYECTO
            this.newTask.id_project = this.projectId;
-
-           // CIERRO EL MODAL
-           this.closeModal();
 
            // MANDO REGISTRO
            this.$inertia.post('/tareas', this.newTask, 
            {
-                preserveScroll: true,
-                onSuccess: (page) => {
-                    let notifier = new AWN()
-                    notifier.success("Tarea creada", {
-                        position:"top-right",
-                        icons:{
+               preserveScroll: true,
+               onSuccess: (page) => {
+                   // CIERRO EL MODAL
+                   this.closeModal();
+
+                   let notifier = new AWN()
+                   
+                   notifier.success("Tarea creada", {
+                       position:"top-right",
+                       icons:{
                             success: "check-circle",
                         },
                         labels:{
                             success: "¡Éxito!",
                         }
                     })
-                }
+                },
+                /* onError: (page) => {
+                    let notifier = new AWN();
+                    notifier.alert("No pudo crearse la tarea. Revisar errores"), {
+                        position:"top-right",
+                        icons:{
+                            alert: "exclamation"
+                        },
+                        labels:{
+                            alert:"¡Hubo un error!"
+                        }
+                    }
+                } */
             }
            );
 
@@ -97,7 +112,7 @@ export default{
             newTask:{
                 title: '',
                 description: '',
-                id_user: 0,
+                id_user: "",
                 id_time: 1,
                 id_state: 0,
                 id_project: null

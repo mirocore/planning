@@ -21,6 +21,8 @@
                     class="w-full text-gray-500 .placeholder-gray-500::placeholder text-xs border-gray-300"
                     placeholder="Ingrese título de la tarea"
                 />
+                <div class="mt-1 text-xs bg-red-300 text-red-900 px-4 py-2" v-if="$page.props.errors.title">{{ $page.props.errors.title }}</div>
+
             </div>
 
             <div>
@@ -33,9 +35,11 @@
                     <div>
                         <label class="text-xs text-gray-500 block" for="id_user">Encargado</label>
                         <select class="w-full text-xs mt-1 text-gray-500 border-gray-400" id="id_user" v-model="task.id_user">
-                            <option value="0">Seleccione Empleado</option>
+                            <option value="">Seleccione Empleado</option>
                             <option v-for="user in users" :key="user.id" :value="user.id">{{ user.name }} {{ user.lastname }}</option>
                         </select>
+                        <div class="mt-1 text-xs bg-red-300 text-red-900 px-4 py-2" v-if="$page.props.errors.id_user">{{ $page.props.errors.id_user }}</div>
+
                     </div>
 
                     <div>
@@ -64,13 +68,14 @@ export default{
         editTask(){
            // TODO VALIDACION
            
-           // CIERRO EL MODAL
-           this.closeModal();
+           
 
            // MANDO REGISTRO
            this.$inertia.put(`/tareas/${this.task.id}`, this.task, {
                 preserveScroll: true,
                 onSuccess: page => {
+                    // CIERRO EL MODAL
+                    this.closeModal();   
                     let notifier = new AWN()
                     notifier.success("Tarea editada", {
                        label:{success: "¡Éxito!"} 

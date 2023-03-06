@@ -27,7 +27,9 @@ class TaskController extends Controller
     }
 
     public function store(Request $request){
-        // VALIDACION SI ES QUE SE PUEDE
+        
+        // VALIDACION
+        $request->validate(Task::$rules, Task::$messages);
         
         // DATOS
         $data =  $request->input();
@@ -56,7 +58,8 @@ class TaskController extends Controller
 
 
     public function update(Task $task, Request $request){
-       // TODO VALIDACION
+       // VALIDACION
+       $request->validate(Task::$rules, Task::$messages);
        
         // OBTENGO LOS DATOS
        $data = $request->input();

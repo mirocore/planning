@@ -16,4 +16,19 @@ class Task extends Model
     public function user(){
         return $this->hasMany( User::class, 'id_user', 'id' );
     }
+
+    public static $rules = [
+        'title' => 'required | min:3 ',
+        'id_project' => 'required',
+        'id_user' => 'required',
+        'id_time' => 'required',
+    ];
+
+    public static $messages = [
+        'title.required' => 'El campo título es obligatorio',
+        'title.min' => 'El mínimo de caracteres es 3',
+        'id_project.required' => 'El proyecto es obligatorio',
+        'id_user.required' => 'Debe seleccionar un encargado',
+        'id_time.required' => 'Debe seleccionar un tiempo',
+    ];
 }
