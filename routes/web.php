@@ -26,6 +26,9 @@ Route::put('/tareas/estado/{task}', [TaskController::class, 'changeState'])->nam
 Route::delete('/tareas/{task}', [TaskController::class, 'destroy'])->name('task.destroy');
 Route::put('/tareas/{task}', [TaskController::class, 'update'])->name('task.update');
 
+/* USUARIOS */
+Route::get('/usuarios', [UserController::class, 'index'])->name('user.index');
+Route::get('/usuarios/{user}', [UserController::class, 'show'])->name('user.show');
 
 /* Route::middleware([
     'auth:sanctum',

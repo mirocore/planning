@@ -16,6 +16,10 @@ class Task extends Model
     public function user(){
         return $this->hasMany( User::class, 'id_user', 'id' );
     }
+    
+    public function time(){
+        return $this->belongsTo(Time::class, 'id_time', 'id');
+    }
 
     public static $rules = [
         'title' => 'required | min:3 ',
