@@ -21,6 +21,10 @@ class Task extends Model
         return $this->belongsTo(Time::class, 'id_time', 'id');
     }
 
+    public function project(){
+        return $this->belongsTo(Project::class, 'id_project', 'id');
+    }
+
     public static $rules = [
         'title' => 'required | min:3 ',
         'id_project' => 'required',

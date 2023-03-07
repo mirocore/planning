@@ -14,6 +14,22 @@
             </div>
         </div>
         
+        <p class="mb-3 mt-5 font-bold text-xl">Listado de tareas</p>
+
+        <div>
+            <div class="grid grid-cols-12 text-xs text-center mb-1 px-4">
+                <div class="col-span-4">Tarea</div>
+                <div class="col-span-2">Proyecto</div>
+                <div class="col-span-2">Producto</div>
+                <div class="col-span-2">Tiempo</div>
+                <div class="col-span-2 text-right">Acciones</div>
+            </div>
+            <div v-for="task in tasks" :key="task.id">
+                <TaskItem 
+                    :data="task"
+                />
+            </div>
+        </div>
     </PageLayout>
 </template>
 
@@ -21,12 +37,14 @@
 
 import PageLayout from '@/Layouts/PageLayout.vue';
 import { Link } from '@inertiajs/vue3';
+import TaskItem from '../../Components/Front/TaskItem.vue';
 
 export default{
     props:['data', 'tasks', 'times'],
     components: {
         PageLayout,
         Link,
+        TaskItem,
     },
     methods:{
         amountTask(time){

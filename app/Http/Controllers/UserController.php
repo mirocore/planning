@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Task;
 use App\Models\Time;
 use App\Models\User;
+use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
@@ -32,10 +33,15 @@ class UserController extends Controller
 
         // TASKS
         $tasks = Task::latest()
-                    ->with('time')
+                    ->with('time', 'project')
                     ->where("id_user", $user->id)
                     ->where("state", "0")
                     ->get();
+        
+        // PRODUCT
+        foreach($tasks as $task){
+            $task['product'] = $task['project']->product;
+        }
 
         //TIMES
         $times = Time::all();
