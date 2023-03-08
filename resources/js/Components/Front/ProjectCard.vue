@@ -1,5 +1,5 @@
 <template>
-    <div class="mb-5 bg-slate-300 p-4 rounded-lg">
+    <div class="mb-5 p-4 rounded-lg" :class="colorFondo">
         <div class="flex justify-between items-center">
             <p class="text-xs text-zinc-600">Creado: <span class="text-zinc-700 font-semibold">{{ project.creado }}</span></p>
             <small class="text-xs text-zinc-600">{{ project.product.name }}</small>
@@ -44,7 +44,7 @@
             />
         </Modal>
 
-        <button @click="toggleModal" class="text-xs bg-blue-800 text-white hover:bg-blue-900 py-1 px-2 transition-all mb-2" >Tarea Nueva</button>
+        <button v-if="project.id_state != 4 && project.id_state != 2" @click="toggleModal" class="text-xs bg-blue-800 text-white hover:bg-blue-900 py-1 px-2 transition-all mb-2" >Tarea Nueva</button>
         <TaskProjectList 
             :tasks="project.tasks"
             closeable="true"
@@ -68,6 +68,22 @@ import AWN from "awesome-notifications";
 
 export default {
     props:['project', 'states', 'users', 'times'],
+    computed:{
+        colorFondo(){
+            switch(this.project.id_state){
+                case 1:
+                    return "bg-indigo-400";
+                case 2:
+                    return "bg-red-300";
+                case 3:
+                    return "bg-slate-300";
+                case 4:
+                    return "bg-green-300";
+                default:
+                    return "bg-slate-300"
+            }
+        }
+    },
     components:{
         TaskProjectList,
         Dropdown,
